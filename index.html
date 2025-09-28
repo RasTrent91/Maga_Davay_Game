@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<script src="https://telegram.org/js/telegram-web-app.js"></script>
+	<script src="telegram-config.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maga Davay</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>Maga Davay</h1>
+            <div class="instructions">
+                <p>Нажми любую кнопку для начала боя!</p>
+                <p>Бей боксеров кнопкой УДАР, борись с борцами кнопкой ЗАХВАТ!</p>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+            
+            <div class="controls">
+                <button id="btnPunch">УДАР</button>
+                <button id="btnTakedown">ЗАХВАТ</button>
+                <button id="btnBoss">СИЛА!</button>
+            </div>
+        </div>
+        
+        <div class="hud">
+            <div class="hud-item">
+                <span class="hud-label">Счет:</span>
+                <span id="scoreValue" class="hud-value">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">Уровень:</span>
+                <span id="levelValue" class="hud-value">1</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">Врагов:</span>
+                <span id="enemyCounter" class="hud-value">0</span>
+            </div>
+            <div class="reaction-timer">
+                <div class="timer-bar">
+                    <div class="timer-fill" id="timerFill"></div>
+                </div>
+                <div class="timer-text">Время реакции: <span id="timerValue">1.0</span>с</div>
+            </div>
+        </div>
+        
+        <div class="game-footer">
+            <p>Босс появляется каждые 30 врагов! Нажми СИЛА! дважды, чтобы победить!</p>
+        </div>
+    </div>
+
+    <!-- Звуковые элементы с исправленными путями и типами -->
+    <audio id="punchSound" preload="auto">
+        <source src="sounds/mixkit-martial-arts-fast-punch-2047.wav" type="audio/wav">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+    <audio id="takedownSound" preload="auto">
+        <source src="sounds/wrestler.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+    <audio id="bossSound" preload="auto">
+        <source src="sounds/boss.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+    <audio id="gameOverSound" preload="auto">
+        <source src="sounds/mixkit-arcade-retro-game-over-213.wav" type="audio/wav">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+    <audio id="victorySound" preload="auto">
+        <source src="sounds/victory.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+    <audio id="startSound" preload="auto">
+        <source src="sounds/mixkit-completion-of-a-level-2063.wav" type="audio/wav">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+
+    <script src="game.js"></script>
+</body>
+</html>
