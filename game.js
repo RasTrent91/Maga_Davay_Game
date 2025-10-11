@@ -316,24 +316,24 @@ const REACTION_DECREASE = 0.05; // Уменьшение времени на 0.05
 const BOSS_INTERVAL = 30; // Босс каждые 30 врагов
 
 // Размеры спрайтов
-const PLAYER_WIDTH = 68;
-const PLAYER_HEIGHT = 86;
-const PLAYER_WRESTLE_WIDTH = 68;
-const PLAYER_WRESTLE_HEIGHT = 74;
-const PLAYER_WRESTLE_ATTACK_WIDTH = 92;
-const PLAYER_WRESTLE_ATTACK_HEIGHT = 74;
-const ENEMY_BOXER_WIDTH = 54;
-const ENEMY_BOXER_HEIGHT = 84;
-const ENEMY_BOXER2_WIDTH = 46;
-const ENEMY_BOXER2_HEIGHT = 82;
-const ENEMY_WRESTLER1_WIDTH = 64;
-const ENEMY_WRESTLER1_HEIGHT = 64;
-const ENEMY_WRESTLER2_WIDTH = 64;
-const ENEMY_WRESTLER2_HEIGHT = 63;
-const BOSS1_WIDTH = 60;
-const BOSS1_HEIGHT = 76;
-const BOSS2_WIDTH = 66;
-const BOSS2_HEIGHT = 88;
+const PLAYER_WIDTH = 51;
+const PLAYER_HEIGHT = 65;
+const PLAYER_WRESTLE_WIDTH = 51;
+const PLAYER_WRESTLE_HEIGHT = 56;
+const PLAYER_WRESTLE_ATTACK_WIDTH = 69;
+const PLAYER_WRESTLE_ATTACK_HEIGHT = 56;
+const ENEMY_BOXER_WIDTH = 41;
+const ENEMY_BOXER_HEIGHT = 63;
+const ENEMY_BOXER2_WIDTH = 35;
+const ENEMY_BOXER2_HEIGHT = 62;
+const ENEMY_WRESTLER1_WIDTH = 48;
+const ENEMY_WRESTLER1_HEIGHT = 48;
+const ENEMY_WRESTLER2_WIDTH = 48;
+const ENEMY_WRESTLER2_HEIGHT = 47;
+const BOSS1_WIDTH = 45;
+const BOSS1_HEIGHT = 57;
+const BOSS2_WIDTH = 50;
+const BOSS2_HEIGHT = 66;
 
 
 // Элементы DOM
@@ -1115,7 +1115,7 @@ function drawBackground() {
 
 // Отрисовка травы для квадратного экрана
 function drawGrass() {
-    const GRASS_HEIGHT = canvas.height * 0.12;
+    const GRASS_HEIGHT = canvas.height * 0.2;
     const grassRatio = grassBg.width / grassBg.height;
     const grassNewWidth = GRASS_HEIGHT * grassRatio;
     const grassY = canvas.height - GRASS_HEIGHT;
@@ -1393,3 +1393,4 @@ function startGame() {
     }
 
 }
+
