@@ -316,24 +316,25 @@ const REACTION_DECREASE = 0.05; // Уменьшение времени на 0.05
 const BOSS_INTERVAL = 30; // Босс каждые 30 врагов
 
 // Размеры спрайтов
-const PLAYER_WIDTH = 85;
-const PLAYER_HEIGHT = 107;
-const PLAYER_WRESTLE_WIDTH = 85;
-const PLAYER_WRESTLE_HEIGHT = 92;
-const PLAYER_WRESTLE_ATTACK_WIDTH = 115;
-const PLAYER_WRESTLE_ATTACK_HEIGHT = 92;
-const ENEMY_BOXER_WIDTH = 67;
-const ENEMY_BOXER_HEIGHT = 105;
-const ENEMY_BOXER2_WIDTH = 57;  // Размеры второго боксера
-const ENEMY_BOXER2_HEIGHT = 102;
-const ENEMY_WRESTLER1_WIDTH = 80;
-const ENEMY_WRESTLER1_HEIGHT = 80;
-const ENEMY_WRESTLER2_WIDTH = 80;
-const ENEMY_WRESTLER2_HEIGHT = 78;
-const BOSS1_WIDTH = 75;
-const BOSS1_HEIGHT = 94;
-const BOSS2_WIDTH = 82;
-const BOSS2_HEIGHT = 110;
+const PLAYER_WIDTH = 68;
+const PLAYER_HEIGHT = 86;
+const PLAYER_WRESTLE_WIDTH = 68;
+const PLAYER_WRESTLE_HEIGHT = 74;
+const PLAYER_WRESTLE_ATTACK_WIDTH = 92;
+const PLAYER_WRESTLE_ATTACK_HEIGHT = 74;
+const ENEMY_BOXER_WIDTH = 54;
+const ENEMY_BOXER_HEIGHT = 84;
+const ENEMY_BOXER2_WIDTH = 46;
+const ENEMY_BOXER2_HEIGHT = 82;
+const ENEMY_WRESTLER1_WIDTH = 64;
+const ENEMY_WRESTLER1_HEIGHT = 64;
+const ENEMY_WRESTLER2_WIDTH = 64;
+const ENEMY_WRESTLER2_HEIGHT = 63;
+const BOSS1_WIDTH = 60;
+const BOSS1_HEIGHT = 76;
+const BOSS2_WIDTH = 66;
+const BOSS2_HEIGHT = 88;
+
 
 // Элементы DOM
 const canvas = document.getElementById('gameCanvas');
@@ -1390,4 +1391,5 @@ function startGame() {
         playSound(startSound);
         startReactionTimer();
     }
+
 }
