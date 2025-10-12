@@ -1,0 +1,751 @@
+@charset "UTF-8";
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #2c3e50, #1a2530);
+    color: #ecf0f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Скрываем аудио элементы */
+audio {
+    display: none;
+}
+
+/* Стили для кнопки звука */
+.sound-toggle {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(52, 73, 94, 0.8);
+    border: 2px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    /* Убираем все стили от наследования */
+    min-width: auto !important;
+    max-width: none !important;
+    flex: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.sound-toggle:hover {
+    background: rgba(52, 73, 94, 1);
+    transform: scale(1.05);
+}
+
+.sound-toggle:active {
+    transform: scale(0.95);
+}
+
+.sound-toggle.muted {
+    opacity: 0.7;
+    border-color: #e74c3c;
+}
+
+
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    background-color: rgba(41, 53, 65, 0.9);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 2px solid #3498db;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #34495e;
+}
+
+.game-header h1 {
+    font-size: 2rem;
+    color: #f1c40f;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+.instructions {
+    background-color: #34495e;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.instructions p {
+    margin: 4px 0;
+}
+
+.game-area {
+    position: relative; /* Добавьте это */
+    margin-bottom: 15px;
+}
+
+/* Стили для квадратного canvas */
+#gameCanvas {
+    display: block;
+    width: 100%;
+    max-width: 100vh; /* Ограничиваем ширину высотой окна */
+    height: auto;
+    aspect-ratio: 1 / 1; /* Принудительно квадратное соотношение */
+    background-color: #2c3e50;
+    border: 3px solid #ecf0f1;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    margin: 0 auto; /* Центрируем */
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    min-width: 100px;
+    flex: 1;
+    max-width: 150px;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#btnPunch {
+    background: linear-gradient(to bottom, #e74c3c, #c0392b);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#btnPunch:hover {
+    background: linear-gradient(to bottom, #ff6b6b, #e74c3c);
+}
+
+#btnTakedown {
+    background: linear-gradient(to bottom, #3498db, #2980b9);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#btnTakedown:hover {
+    background: linear-gradient(to bottom, #5dade2, #3498db);
+}
+
+#btnBoss {
+    background: linear-gradient(to bottom, #f1c40f, #f39c12);
+    color: #2c3e50;
+    font-size: 1.2rem;
+    padding: 15px 25px;
+    display: none;
+    width: 90% !important; /* Принудительно 90% ширины */
+    max-width: 90% !important; /* Принудительно 90% максимальной ширины */
+    min-width: auto !important; /* Убираем минимальную ширину */
+    flex: none !important; /* Убираем flex-свойства */
+    margin: 5px auto; /* Центрируем и добавляем отступ */
+}
+
+#btnBoss:hover {
+    background: linear-gradient(to bottom, #f7dc6f, #f1c40f);
+}
+
+.hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    background-color: rgba(52, 73, 94, 0.8);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 12px;
+    border-radius: 0 0 10px 10px;
+    z-index: 10;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hud-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hud-label {
+    font-size: 0.85rem;
+    color: #bdc3c7;
+    margin-bottom: 3px;
+}
+
+.hud-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f1c40f;
+}
+
+.reaction-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 140px;
+}
+
+.timer-bar {
+    width: 100%;
+    height: 12px;
+    background-color: #2c3e50;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.timer-fill {
+    height: 100%;
+    background: linear-gradient(to right, #2ecc71, #f1c40f, #e74c3c);
+    width: 100%;
+    transition: width 0.1s linear;
+    border-radius: 8px;
+}
+
+.timer-text {
+    font-size: 0.85rem;
+    margin-top: 4px;
+    color: #bdc3c7;
+}
+
+.game-footer {
+    text-align: center;
+    padding: 8px;
+    background-color: #34495e;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .container {
+        padding: 12px;
+    }
+    
+    .game-header h1 {
+        font-size: 1.7rem;
+    }
+    
+    .controls {
+        flex-direction: row;
+        gap: 8px;
+        padding: 0 5px;
+    }
+
+    .sound-toggle {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+        top: 12px;
+        right: 15px;
+    }
+    
+    button {
+        width: auto;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        min-width: 80px;
+        max-width: 120px;
+    }
+    
+    #btnBoss {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+        width: 95% !important; /* На мобильных можно чуть больше */
+        max-width: 95% !important;
+    }
+    
+    .hud {
+        height: 18%;
+        padding: 0 8px;
+        gap: 8px;
+    }
+
+    .hud-item {
+        flex-direction: row;
+        gap: 8px;
+    }
+    
+    .hud-label {
+        font-size: 0.75rem;
+    }
+    
+    .hud-value {
+        font-size: 1.1rem;
+    }
+
+    .timer-text {
+        font-size: 0.75rem;
+    }
+    
+    .instructions {
+        font-size: 0.85rem;
+        padding: 6px;
+    }
+    
+    .game-footer {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .sound-toggle {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+        top: 10px;
+        right: 12px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    .game-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .controls {
+        gap: 5px;
+    }
+    
+    button {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        min-width: 70px;
+        max-width: 100px;
+    }
+    
+    #btnBoss {
+        font-size: 1rem;
+        padding: 10px 15px;
+        width: 98% !important;
+        max-width: 98% !important;
+    }
+    
+    .hud {
+        height: 16%;
+        padding: 0 5px;
+        gap: 5px;
+    }
+    
+    .hud-label {
+        font-size: 0.7rem;
+    }
+    
+    .hud-value {
+        font-size: 1rem;
+    }
+    
+    .timer-text {
+        font-size: 0.7rem;
+    }
+    
+    .timer-bar {
+        height: 10px;
+    }
+}
+
+/* Анимации */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes enemyDefeat {
+    0% { transform: translateY(0) rotate(0); opacity: 1; }
+    100% { transform: translateY(300px) rotate(45deg); opacity: 0; }
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out;
+}
+
+.flash {
+    animation: flash 0.3s ease-in-out 2;
+}
+
+.defeated {
+    animation: enemyDefeat 0.8s ease-in-out forwards;
+}
+
+/* Стили для экрана начала игры */
+.start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    border-radius: 8px;
+}
+
+.start-screen h2 {
+    font-size: 2rem;
+    color: #f1c40f;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.start-screen p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    text-align: center;
+    max-width: 90%;
+}
+
+.start-button {
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    background: linear-gradient(to bottom, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.start-button:hover {
+    background: linear-gradient(to bottom, #58d68d, #2ecc71);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Стили для экрана завершения игры */
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    border-radius: 8px;
+}
+
+.game-over h2 {
+    font-size: 2.5rem;
+    color: #e74c3c;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-over p {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.restart-button {
+    margin-top: 15px;
+    background: linear-gradient(to bottom, #2ecc71, #27ae60);
+    color: white;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+}
+
+.restart-button:hover {
+    background: linear-gradient(to bottom, #58d68d, #2ecc71);
+}
+
+/* Оптимизация для очень высоких экранов */
+@media (min-height: 800px) {
+    .container {
+        max-width: 500px;
+    }
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    #gameCanvas {
+        max-width: 95vw;
+        max-height: 95vw;
+    }
+}
+
+/* Стили для экрана загрузки */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-container {
+    background-color: rgba(52, 73, 94, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    min-width: 250px;
+    border: 2px solid #3498db;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.loading-text {
+    color: #ecf0f1;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #2c3e50;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #34495e;
+}
+
+.loading-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #e74c3c, #c0392b);
+    border-radius: 10px;
+    transition: width 0.1s linear;
+}
+
+.loading-title {
+    color: #f1c40f;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.loading-subtext {
+    color: #bdc3c7;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    min-height: 1.2em;
+}
+
+/* Стили для экрана завершения игры */
+.game-over-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.game-over-container {
+    background-color: rgba(52, 73, 94, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    min-width: 300px;
+    max-width: 90%;
+    border: 3px solid #e74c3c;
+    box-shadow: 0 0 30px rgba(231, 76, 60, 0.5);
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.game-over-container h2 {
+    color: #e74c3c;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-over-screen.show .game-over-container {
+    transform: scale(1);
+}
+
+.stats {
+    background-color: rgba(44, 62, 80, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 1px solid #34495e;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(52, 73, 94, 0.5);
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.stat-label {
+    color: #bdc3c7;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.stat-value {
+    color: #f1c40f;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: right;
+}
+
+.restart-button {
+    background: linear-gradient(to bottom, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    min-width: 250px;
+}
+
+.restart-button:hover {
+    background: linear-gradient(to bottom, #58d68d, #2ecc71);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.restart-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .game-over-container {
+        padding: 20px;
+        min-width: 280px;
+    }
+    
+    .game-over-container h2 {
+        font-size: 1.8rem;
+    }
+    
+    .stat-label {
+        font-size: 1rem;
+    }
+    
+    .stat-value {
+        font-size: 1.1rem;
+    }
+    
+    .restart-button {
+        font-size: 1.1rem;
+        padding: 12px 25px;
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-over-container {
+        padding: 15px;
+        min-width: 250px;
+    }
+    
+    .game-over-container h2 {
+        font-size: 1.6rem;
+    }
+    
+    .stats {
+        padding: 15px;
+    }
+    
+    .stat-item {
+        margin-bottom: 8px;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+    }
+    
+    .restart-button {
+        font-size: 1rem;
+        padding: 10px 20px;
+        min-width: 180px;
+    }
+}
